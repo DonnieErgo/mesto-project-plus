@@ -4,18 +4,18 @@ import { ICard } from '../utils/types';
 const cardsSchema = new Schema<ICard>({
   name: {
     type: String,
-    minlength: 2,
-    maxlength: 20,
-    required: true,
+    minlength: [2, 'Поле должно содержать от 2 до 20 символов'],
+    maxlength: [20, 'Поле должно содержать от 2 до 20 символов'],
+    required: [true, 'Обязательное поле'],
   },
   link: {
     type: String,
-    required: true,
+    required: [true, 'Обязательное поле'],
   },
   owner: {
     type: Schema.Types.ObjectId,
     ref: 'user',
-    required: true,
+    required: [true, 'Обязательное поле'],
   },
   likes: [
     {
