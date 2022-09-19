@@ -42,7 +42,7 @@ export const deleteCard = (req: ISessionRequest, res: Response, next: NextFuncti
     })
     .then(() => res.status(200).send({ message: 'Карточка удалена' }))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         return next(new BadRequestError(err.message));
       }
       return next(err);
