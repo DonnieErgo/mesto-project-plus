@@ -1,8 +1,12 @@
-import express, { NextFunction, Response, Request } from 'express';
+import express from 'express';
 import mongoose from 'mongoose';
 import router from './routes/index';
 import errorHandler from './middlewares/errorHandler';
-import { ISessionRequest } from './utils/types';
+import { createUser, login } from './controllers/users';
+import { errors } from 'celebrate';
+import auth from './middlewares/auth';
+import { signinValidation, signupValidation } from './utils/validation'
+import { requestLogger, errorLogger } from './middlewares/logger';
 
 const { PORT = 3000 } = process.env;
 
@@ -10,12 +14,18 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use((req: ISessionRequest, res: Response, next: NextFunction) => {
-  req.user = { _id: '6327872911705528d1a7174c', };
-  next();
-});
+app.use(requestLogger);
+
+app.post('/signin', signinValidation, login);
+app.post('/signup', signupValidation, createUser);
+
+app.use(auth);
 
 app.use(router);
+
+app.use(errorLogger);
+
+app.use(errors());
 
 app.use(errorHandler);
 
