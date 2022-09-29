@@ -10,7 +10,7 @@ export default (req: IAuthRequest, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    return new UnauthorizedError('Необходима авторизация.');
+    throw new UnauthorizedError('Необходима авторизация.');
   }
 
   const token = extractBearerToken(authorization);
@@ -19,7 +19,7 @@ export default (req: IAuthRequest, res: Response, next: NextFunction) => {
   try {
     payload = jwt.verify(token, 'super-strong-secret');
   } catch (err) {
-    return new UnauthorizedError('Проблемы с токеном');
+    throw new UnauthorizedError('Проблемы с токеном');
   }
 
   req.user = payload;
