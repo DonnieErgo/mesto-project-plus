@@ -1,11 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import { errors } from 'celebrate';
 import router from './routes/index';
 import errorHandler from './middlewares/errorHandler';
 import { createUser, login } from './controllers/users';
-import { errors } from 'celebrate';
 import auth from './middlewares/auth';
-import { signinValidation, signupValidation } from './utils/validation'
+import { signinValidation, signupValidation } from './utils/validation';
 import { requestLogger, errorLogger } from './middlewares/logger';
 
 const { PORT = 3000 } = process.env;
